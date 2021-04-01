@@ -27,7 +27,7 @@ Los anteriores comandos compilan el proyecto en la carpeta target, ejecutan los 
 
 Para levantar el microservicio en una instancia de Tomcat ejecutamos:
 
-`java -jar calculadora-0.0.1-SNAPSHOT.jar`
+`java -jar calculadora-0.0.1.jar`
 
 
 El microservicio se ha implementado con un endpoint genérico que recibe como parámetros la operación y la lista de operandos.
