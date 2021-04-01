@@ -1,5 +1,6 @@
 package com.sanitas.prueba4.rest;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,18 +29,23 @@ public class OperacionAritmeticaController {
 	@GetMapping("/v1/rest/calculadora")
 	  @ResponseBody
 	  public ResponseEntity<ResultadoWrapper> calcular(@RequestParam(name="operacion", required=true, defaultValue="") String operacion,
-			  				@RequestParam(name="operandos", required=true, defaultValue="") String[] operandos) {
+			  				@RequestParam(name="operandos", required=true, defaultValue="") BigDecimal[] operandos) {
 
 		ResultadoWrapper resultado = null;
 		try {
 			ResultadoOperacion resultadoOperacion = operacionesService.ejecutaOperacion(operacion, operandos);					
-			resultado =  ResultadoWrapper.operacionExitosa(operacion, Arrays.asList(operandos), resultadoOperacion);
+			resultado =  ResultadoWrapper.operacionExitosa(operacion, Arrays.asList(operandos), resultadoOperacion.getResultado());
 			tracer.trace(resultado);
+			
+		}catch (IllegalArgumentException iae) {
+			resultado = ResultadoWrapper.operacionFallida(operacion, Arrays.asList(operandos), iae.getMessage());			
+			tracer.trace(resultado);
+			return new ResponseEntity<>(resultado, HttpStatus.BAD_REQUEST);
 			
 		}catch(Exception e) {
 			resultado = ResultadoWrapper.operacionFallida(operacion, Arrays.asList(operandos), e.getMessage());			
 			tracer.trace(resultado);
-			return new ResponseEntity<>(resultado, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(resultado, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	    return new ResponseEntity<>(resultado, HttpStatus.OK);
 	  }	
