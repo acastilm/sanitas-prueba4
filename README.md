@@ -41,7 +41,7 @@ Ejemplo de operación suma:
 
 Ejemplo de operación resta:
 
-`http://127.0.0.1:8080/v1/rest/calculadora?operacion=suma&operandos=2.3,-5.3`
+`http://127.0.0.1:8080/v1/rest/calculadora?operacion=resta&operandos=5.3,2.3`
 
 Ejemplo de operación no soportada:
 
