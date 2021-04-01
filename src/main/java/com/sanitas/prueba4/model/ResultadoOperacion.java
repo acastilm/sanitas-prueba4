@@ -4,17 +4,20 @@ import java.math.BigDecimal;
 
 public class ResultadoOperacion{
 
-	private BigDecimal resultadoOperacion = BigDecimal.ZERO;
+	private BigDecimal resultado = BigDecimal.ZERO;
 	private Operacion operacion;
 
+	public ResultadoOperacion() {	
+		System.out.println("Constructor ResultadoOperacion");
+	}
 	
-	public ResultadoOperacion(BigDecimal valor) {
+	public ResultadoOperacion(BigDecimal resultado) {
 	
-		this.resultadoOperacion = valor;
+		this.resultado = resultado;
 	}	
 	
-	public BigDecimal getResultadoOperacion() {
-		return resultadoOperacion;
+	public BigDecimal getResultado() {
+		return resultado;
 	}
 	
 	public void setOperacion(Operacion operacion) {
@@ -23,5 +26,9 @@ public class ResultadoOperacion{
 	
 	public Operacion getOperacion() {
 		return operacion;
+	}
+	
+	public void setResultado(BigDecimal resultado) {
+		this.resultado = resultado;
 	}
 }
