@@ -9,12 +9,12 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.sanitas.prueba4</groupId>
-	<artifactId>alberto</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>calculadora</artifactId>
+	<version>0.0.1</version>
 	<name>sanitas-prueba4</name>
-	<description>POC de la Prueba4 de Sanitas</description>
+	<description>POC de la Prueba4 de Sanitas - Alberto Castillo</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>8</java.version>		
 	</properties>
 	<dependencies>
 		<dependency>
@@ -50,5 +50,7 @@
 			</plugin>
 		</plugins>
 	</build>
+	
+	
 
 </project>
