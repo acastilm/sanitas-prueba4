@@ -3,6 +3,7 @@ package com.sanitas.prueba4.rest;
 import java.math.BigDecimal;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -30,28 +31,52 @@ public class OperacionAritmeticaRestControllerTest {
 	public void test_whenSuccess_shouldReturnResponseOK() throws Exception{
 		
 		String operacion = "suma";
-		String [] operandos = givenTwoOperands();				
+		String [] operandos = givenTwoOperands();
+		String url = "http://localhost:" + port + "/v1/rest/calculadora?operacion={nombreOperacion}&operandos={operandos}";
 		
-		Assertions.assertTrue(this.restTemplate.getForEntity("http://localhost:" + port + "/v1/rest/calculadora?operacion={nombreOperacion}&operandos={operandos}",
-				ResultadoWrapper.class, operacion, operandos).getStatusCode().equals(HttpStatus.OK));		
+		Assertions.assertAll(
+			() -> Assertions.assertTrue(this.restTemplate.getForEntity(url,
+				ResultadoWrapper.class, operacion, operandos).getStatusCode().equals(HttpStatus.OK)),		
+				
+			() ->Assertions.assertTrue(this.restTemplate.getForEntity(url,
+				ResultadoWrapper.class, operacion, operandos).getBody().getResultado().compareTo(givenAddResult())==0)
+		);
 	}
 	
 	@Test
-	public void test_whenFails_shouldReturnResponseKO() throws Exception{
+	public void test_whenNoNumericOperands_shouldReturnResponseBadRequest() throws Exception{
+		
+		String operacion = "suma";
+		String [] operandos = givenTwoOperandsNotNumerics();
+		String url = "http://localhost:" + port + "/v1/rest/calculadora?operacion={nombreOperacion}&operandos={operandos}";
+		Assertions.assertTrue(this.restTemplate.getForEntity(url,
+				ResultadoWrapper.class, operacion, operandos).getStatusCode().equals(HttpStatus.BAD_REQUEST));						
+	}
+	
+	@Test
+	public void test_whenNotTwoOperands_shouldReturnResponseBadRequest() throws Exception{
 		
 		String operacion = "suma";
 		String [] operandos = givenThreeOperands();		
-				
-		Assertions.assertTrue(this.restTemplate.getForEntity("http://localhost:" + port + "/v1/rest/calculadora?operacion={nombreOperacion}&operandos={operandos}",
-				ResultadoWrapper.class, operacion, operandos).getStatusCode().equals(HttpStatus.BAD_REQUEST));
+		String url = "http://localhost:" + port + "/v1/rest/calculadora?operacion={nombreOperacion}&operandos={operandos}";
 		
+		Assertions.assertTrue(this.restTemplate.getForEntity(url,
+				ResultadoWrapper.class, operacion, operandos).getStatusCode().equals(HttpStatus.BAD_REQUEST));		
 	}
 		
 	private String [] givenTwoOperands() {
 		return new String []{"2.4","3"};
 	}
 	
+	private BigDecimal givenAddResult() {
+		return new BigDecimal("5.4");
+	}
+	
+	private String [] givenTwoOperandsNotNumerics() {
+		return new String []{"2.4aa","3bb"};
+	}
 	private String [] givenThreeOperands() {
 		return new String []{"2.4","3","3"};
 	}	
+	 
 }
